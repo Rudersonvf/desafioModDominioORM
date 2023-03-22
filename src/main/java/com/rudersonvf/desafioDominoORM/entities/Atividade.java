@@ -2,6 +2,11 @@ package com.rudersonvf.desafioDominoORM.entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
+
 @Entity
 @Table(name = "tb_atividade")
 public class Atividade {
@@ -12,6 +17,19 @@ public class Atividade {
     private String nome;
     private String descricao;
     private Double price;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Categoria categoria;
+
+    @OneToMany(mappedBy = "atividade")
+    private List<Bloco> blocos = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "tb_participante_atividade",
+            joinColumns = @JoinColumn(name = "atividade_id"),
+            inverseJoinColumns = @JoinColumn(name = "participante_id"))
+    private Set<Participante> participantes = new HashSet<>();
 
     public Atividade() {
     }
